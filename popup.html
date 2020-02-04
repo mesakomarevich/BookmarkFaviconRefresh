@@ -1,0 +1,101 @@
+<!doctype html>
+<!--
+ This page is shown when the extension button is clicked, because the
+ "browser_action" field in manifest.json contains the "default_popup" key with
+ value "popup.html".
+ -->
+<html>
+
+<head>
+    <title>Getting Started Extension's Popup</title>
+    <style>
+        body {
+            font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+            font-size: 100%;
+        }
+
+        #status {
+            /* avoid an excessively wide status text */
+            white-space: pre;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            max-width: 400px;
+        }
+    </style>
+    <script type="text/javascript" src="jquery-3.2.0.min.js"></script>
+    <!-- <script type="text/javascript">
+        Array.prototype.distinct = function ()
+        {
+            return this.filter(function (value, index, self)
+            {
+                return self.indexOf(value) === index;
+            });
+        };
+
+        var bookmarks = [];
+        var urls = [];
+
+        function getUrls(node)
+        {
+            console.log(node);
+            if (node.hasOwnProperty('children'))
+            {
+                for (var i = 0; i < node.children.length; i++)
+                {
+                    getUrls(node.children[i]);
+                }
+            }
+            else if (node.hasOwnProperty('url'))
+            {
+                urls.push(node.url);
+            }
+        }
+
+        async function visit()
+        {
+            for (var i = 0; i < urls.length; i++)
+            {
+                try
+                {
+                    await $.ajax({
+                        url: urls[i],
+                        type: 'GET'
+                    });
+                    console.log("Website " + i + ": " + urls[i]);
+                }
+                catch(error){
+                    //ignore
+                }
+            }
+        }
+
+        chrome.bookmarks.getTree(function (bookmarkTreeNodes)
+        {
+            bookmarks = bookmarkTreeNodes;
+            console.log(bookmarkTreeNodes);
+            for (var i = 0; i < bookmarkTreeNodes.length; i++)
+            {
+                getUrls(bookmarkTreeNodes[i]);
+            }
+
+            console.log(urls);
+            visit();
+            // urls = urls.distinct();
+            // console.log(urls);
+        });
+    </script> -->
+    <script src="popup.js"></script>
+</head>
+
+<body>
+    Downloading
+    <div id="status"></div>
+    <img id="image-result" hidden>
+</body>
+
+<!-- 
+  <head>
+    <script src="popup.js"></script>
+  </head> -->
+
+</html>
