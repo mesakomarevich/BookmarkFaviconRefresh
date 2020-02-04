@@ -114,6 +114,15 @@ async function getWindow(windowId)
     });
 }
 
+function closeTabsOnComplete(tabId, changeInfo, tab)
+{
+    if (changeInfo.status === 'complete')
+    {
+        chrome.tabs.remove(tab.id);
+        console.log("removed a tab from our handler");
+    }
+}
+
 async function visit()
 {
     var newWindow = await new Promise((resolve) =>
@@ -125,14 +134,15 @@ async function visit()
         });
     });
 
-    chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab)
-    {
-        if (changeInfo.status === 'complete')
-        {
-            chrome.tabs.remove(tab.id);
-            console.log("removed a tab from our handler");
-        }
-    });
+    chrome.tabs.onUpdated.addListener(closeTabsOnComplete);
+    // chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab)
+    // {
+    //     if (changeInfo.status === 'complete')
+    //     {
+    //         chrome.tabs.remove(tab.id);
+    //         console.log("removed a tab from our handler");
+    //     }
+    // });
 
     var maxTabs = 20;
     console.log(newWindow);
@@ -154,7 +164,7 @@ async function visit()
                             setTimeout(function ()
                             {
                                 chrome.tabs.remove(tab.id);
-                            }, 10000);
+                            }, 20000);
                         });
                     break;
                 } else
@@ -168,17 +178,6 @@ async function visit()
                     });
                 }
             }
-            // await new Promise((resolve) => {
-            //     chrome.tabs.create({ windowId: newWindow.id, url: urls[i], active: false },
-            //         function (tab)
-            //         {
-            //             setTimeout(function ()
-            //             {
-            //                 chrome.tabs.remove(tab.id);
-            //                 resolve(tab.id);
-            //             }, 5000);
-            //         });
-            // });
 
             console.log("Website " + i + ": " + urls[i]);
         }
@@ -188,6 +187,7 @@ async function visit()
             //ignore
         }
     }
+    chrome.tabs.onUpdated.removeListener(closeTabsOnComplete);
 }
 
 chrome.bookmarks.getTree(function (bookmarkTreeNodes)
